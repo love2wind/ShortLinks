@@ -243,7 +243,6 @@ class ShortLinks_Plugin implements Typecho_Plugin_Interface
      */
     public static function convertLink($link, $check = true)
     {
-        $rewrite = (Helper::options()->rewrite) ? '' : 'index.php/'; // 伪静态处理
         $pluginOption = self::options();
         $linkBase = ltrim(rtrim(Typecho_Router::get('go')['url'], '/'), '/'); // 防止链接形式修改后不能用
         $siteUrl = Helper::options()->siteUrl;
@@ -262,7 +261,7 @@ class ShortLinks_Plugin implements Typecho_Plugin_Interface
                 return $link;
             }
         }
-        return $siteUrl . $rewrite . str_replace('[key]', self::urlSafeB64Encode(htmlspecialchars_decode($link)), $linkBase);
+        return Typecho_Common::url(str_replace('[key]', self::urlSafeB64Encode(htmlspecialchars_decode($link)), $linkBase), Helper::options()->index);
     }
 
     /**
